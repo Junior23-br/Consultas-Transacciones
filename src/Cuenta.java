@@ -39,7 +39,24 @@ public class Cuenta {
                         " -Nombre: " + resultSet.getString(3) +
                         " -Saldo: " +resultSet.getDouble(4));
             }
+            //Generar una transaccion
+            connection.setAutoCommit(false); //Para poder manejar el momento en el que vamos hacer commit
+            PreparedStatement preparedStatementUpdate = connection.prepareStatement(SQL_UPDATE);
+            preparedStatementUpdate.setDouble(1,3432);
+            preparedStatementUpdate.setInt(2,1);
+            preparedStatementUpdate.execute();
+            connection.commit();
+            //Luego de una transaccion lo vuelvo a true, por good practica
+            connection.setAutoCommit(true);
 
+            ResultSet resultSetUpdate = statement.executeQuery(SQL_SELECT);
+            while (resultSetUpdate.next()) {
+                System.out.println(" El saldo actualizado es:+" +
+                        " -ID: " + resultSetUpdate.getDouble(1) +
+                        " -Numero cuenta: " + resultSetUpdate.getInt(2) +
+                        " -Nombre: " + resultSetUpdate.getString(3) +
+                        " -Saldo: " +resultSetUpdate.getDouble(4));
+            }
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
